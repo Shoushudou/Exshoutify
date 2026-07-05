@@ -69,6 +69,34 @@ mkdir -p ~/Music/Organized
 mkdir -p ~/.music_downloader/logs
 mkdir -p ~/.music_downloader/temp
 
+# Install exshoutify command
+echo "[*] Installing exshoutify command..."
+if [ -n "$PREFIX" ]; then
+    # Termux
+    BIN_DIR="$PREFIX/bin"
+else
+    # Standard Linux
+    BIN_DIR="/usr/local/bin"
+fi
+
+if [ -w "$BIN_DIR" ] || [ -n "$PREFIX" ]; then
+    cat << EOF > "$BIN_DIR/exshoutify"
+#!/bin/bash
+PROJECT_DIR="$(pwd)"
+python3 "\$PROJECT_DIR/main.py" "\$@"
+EOF
+    chmod +x "$BIN_DIR/exshoutify"
+    echo "[✓] Installed to $BIN_DIR/exshoutify"
+else
+    echo "[!] Requires sudo to install command to $BIN_DIR"
+    cat << EOF | sudo tee "$BIN_DIR/exshoutify" > /dev/null
+#!/bin/bash
+PROJECT_DIR="$(pwd)"
+python3 "\$PROJECT_DIR/main.py" "\$@"
+EOF
+    sudo chmod +x "$BIN_DIR/exshoutify"
+fi
+
 # Create symlink untuk easy access
 echo "[*] Creating symlink..."
 ln -sf "$(pwd)" ~/music-downloader 2>/dev/null || true
@@ -76,7 +104,7 @@ ln -sf "$(pwd)" ~/music-downloader 2>/dev/null || true
 # Test installation
 echo ""
 echo "[*] Testing installation..."
-if python3 main.py --help > /dev/null 2>&1; then
+if exshoutify --help > /dev/null 2>&1; then
     echo ""
     echo "╔════════════════════════════════════════════════════════════════╗"
     echo "║                  ✓ INSTALLATION COMPLETED!                    ║"
@@ -90,15 +118,15 @@ if python3 main.py --help > /dev/null 2>&1; then
     echo "   ~/.music_downloader/logs"
     echo ""
     echo "🎵 Usage examples:"
-    echo "   python3 main.py 'https://open.spotify.com/track/...'"
-    echo "   python3 main.py 'https://www.youtube.com/watch?v=...'"
-    echo "   python3 main.py --batch urls.txt --parallel"
-    echo "   python3 main.py 'url' --organize --format flac"
+    echo "   exshoutify 'https://open.spotify.com/track/...'"
+    echo "   exshoutify 'https://www.youtube.com/watch?v=...'"
+    echo "   exshoutify --batch urls.txt --parallel"
+    echo "   exshoutify 'url' --organize --format flac"
     echo ""
     echo "✨ Start downloading now!"
     echo ""
 else
     echo "[⚠] Installation completed but test failed"
-    echo "Try running: python3 main.py --help"
+    echo "Try running: exshoutify --help"
     exit 1
 fi

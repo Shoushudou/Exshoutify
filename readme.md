@@ -64,38 +64,38 @@ pip install -r requirements.txt
 
 ```bash
 # Download single Spotify track
-python main.py "https://open.spotify.com/track/3n3Ppam7vgaVa1iaRUc9Lp"
+exshoutify "https://open.spotify.com/track/3n3Ppam7vgaVa1iaRUc9Lp"
 
 # Download YouTube video
-python main.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+exshoutify "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 # Download Spotify album
-python main.py "https://open.spotify.com/album/3T4tUhGYeRz9D2ObvXZnVJ"
+exshoutify "https://open.spotify.com/album/3T4tUhGYeRz9D2ObvXZnVJ"
 
 # Download YouTube playlist
-python main.py "https://www.youtube.com/playlist?list=PLx"
+exshoutify "https://www.youtube.com/playlist?list=PLx"
 ```
 
 ### Advanced Options
 
 ```bash
 # Download with FLAC format (lossless)
-python main.py "url" --format flac
+exshoutify "url" --format flac
 
 # Download dengan kualitas lebih rendah
-python main.py "url" --quality 192
+exshoutify "url" --quality 192
 
 # Organize downloads ke Artist/Album folder
-python main.py "url" --organize
+exshoutify "url" --organize
 
 # Batch download dari file
-python main.py --batch urls.txt
+exshoutify --batch urls.txt
 
 # Parallel download (lebih cepat)
-python main.py --batch urls.txt --parallel
+exshoutify --batch urls.txt --parallel
 
 # Combine options
-python main.py --batch urls.txt --organize --format flac --parallel --quality 320
+exshoutify --batch urls.txt --organize --format flac --parallel --quality 320
 ```
 
 ## 📁 Project Structure
@@ -149,7 +149,7 @@ BATCH_CONFIG = {
 
 ### Download Single Track
 ```bash
-python main.py "https://open.spotify.com/track/3n3Ppam7vgaVa1iaRUc9Lp" --organize
+exshoutify "https://open.spotify.com/track/3n3Ppam7vgaVa1iaRUc9Lp" --organize
 ```
 
 ### Create Batch File (urls.txt)
@@ -161,12 +161,12 @@ https://open.spotify.com/album/zzz
 
 ### Download Batch
 ```bash
-python main.py --batch urls.txt --organize --parallel --quality 320
+exshoutify --batch urls.txt --organize --parallel --quality 320
 ```
 
 ### Download Playlist
 ```bash
-python main.py "https://open.spotify.com/playlist/xxx" --organize --format flac
+exshoutify "https://open.spotify.com/playlist/xxx" --organize --format flac
 ```
 
 ## 📊 Download Locations

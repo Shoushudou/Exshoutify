@@ -13,5 +13,5 @@ pip install -r requirements.txt
 
 Run the following command to start the downloader:
 ```bash
-python main.py
+exshoutify "url"
 ```
