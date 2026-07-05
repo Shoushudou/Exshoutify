@@ -136,4 +136,3 @@ class SpotifyDownloader:
         except Exception as e:
             logger.error(f"Error downloading Spotify playlist: {e}")
             return []
-```

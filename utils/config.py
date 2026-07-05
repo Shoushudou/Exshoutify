@@ -31,4 +31,3 @@ TEMP_DIR.mkdir(parents=True, exist_ok=True)
 # Logs directory
 LOGS_DIR = Path.home() / ".exshoutify" / "logs"
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
-```

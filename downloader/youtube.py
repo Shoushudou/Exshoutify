@@ -90,4 +90,3 @@ class YouTubeDownloader:
         except Exception as e:
             logger.error(f"Error downloading YouTube playlist: {e}")
             return []
-```

@@ -101,4 +101,3 @@ class AudioConverter:
         except Exception as e:
             logger.error(f"Error converting to FLAC: {e}")
             return False
-```

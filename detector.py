@@ -98,4 +98,3 @@ class URLDetector:
                     return True
         
         return False
-```

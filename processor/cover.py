@@ -87,4 +87,3 @@ class CoverProcessor:
         except Exception as e:
             logger.warning(f"Error embedding cover: {e}")
             return False
-```

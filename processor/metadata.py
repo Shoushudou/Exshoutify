@@ -87,4 +87,3 @@ class MetadataProcessor:
         except Exception as e:
             logger.warning(f"Error embedding metadata: {e}")
             return False
-```
