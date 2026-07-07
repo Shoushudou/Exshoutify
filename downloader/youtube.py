@@ -37,6 +37,8 @@ class YouTubeDownloader:
                 '-x',
                 '--audio-format', audio_format.lower(),
                 '--audio-quality', f'{audio_quality}K',
+                '--add-metadata',
+                '--embed-thumbnail',
                 '-o', str(output_path.with_suffix('')),
                 url
             ]
@@ -74,6 +76,8 @@ class YouTubeDownloader:
                 '-x',
                 '--audio-format', audio_format.lower(),
                 '--audio-quality', f'{audio_quality}K',
+                '--add-metadata',
+                '--embed-thumbnail',
                 '-o', str(output_dir / '%(title)s'),
                 url
             ]
