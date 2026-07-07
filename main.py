@@ -13,7 +13,6 @@ from detector import URLDetector, Platform
 from downloader.spotify import SpotifyDownloader
 from downloader.youtube import YouTubeDownloader
 from processor.metadata import MetadataProcessor
-from processor.cover import CoverProcessor
 from processor.converter import AudioConverter
 from utils.logger import logger
 from utils.sanitizer import sanitize_filename, sanitize_path_part
@@ -148,10 +147,9 @@ class MusicDownloader:
         
         try:
             if content_type == 'video':
-                temp_file = temp_dir / "temp_audio.tmp"
                 downloaded_file = YouTubeDownloader.download_video(
-                    url, temp_file,
-                    audio_format='mp3',
+                    url, temp_dir,
+                    audio_format=self.audio_format,
                     audio_quality=self.quality
                 )
                 return self._process_downloaded_file(downloaded_file)
@@ -159,7 +157,7 @@ class MusicDownloader:
             elif content_type == 'playlist':
                 downloaded_files = YouTubeDownloader.download_playlist(
                     url, temp_dir,
-                    audio_format='mp3',
+                    audio_format=self.audio_format,
                     audio_quality=self.quality
                 )
                 # FIX: Return all results, not just first one
@@ -172,7 +170,7 @@ class MusicDownloader:
     
     def _process_downloaded_file(self, file_path: Optional[Path]) -> Optional[Path]:
         """
-        Process downloaded file - convert, embed metadata, cover
+        Process downloaded file - move to organized folder and embed extra metadata if needed
         
         Args:
             file_path: Path ke downloaded file
@@ -203,24 +201,12 @@ class MusicDownloader:
                 title = sanitize_filename(metadata.get('title', file_path.stem))
                 output_path = self.output_dir / f"{title}.{self.audio_format}"
             
-            # Convert jika diperlukan
-            if file_path.suffix.lower() != f'.{self.audio_format}':
-                logger.info(f"Converting to {self.audio_format.upper()}...")
-                
-                if self.audio_format == 'mp3':
-                    if not AudioConverter.convert_to_mp3(file_path, output_path, self.quality):
-                        logger.error("Conversion failed")
-                        return None
-                elif self.audio_format == 'flac':
-                    if not AudioConverter.convert_to_flac(file_path, output_path):
-                        logger.error("Conversion failed")
-                        return None
-            else:
-                # FIX: Use shutil.move() for cross-disk safety
-                output_path.parent.mkdir(parents=True, exist_ok=True)
-                shutil.move(str(file_path), str(output_path))
+            # FIX: Use shutil.move() for cross-disk safety
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(file_path), str(output_path))
             
-            # Embed metadata
+            # Embed metadata (optional, just to be sure extra fields are there if available)
+            # Cover art is not stripped by mutagen `easy=True`.
             MetadataProcessor.embed_metadata(output_path, metadata)
             
             logger.info(f"✓ Successfully saved: {output_path}")
